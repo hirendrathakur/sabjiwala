@@ -33,7 +33,7 @@ class Routes extends FileDirective with JsonToEntityMarshaller {
               val cmd = s"tesseract ${fileInfo.tmpFilePath} /tmp/out -l eng -c preserve_interword_spaces=1"
               val output = cmd.!!
               val source = scala.io.Source.fromFile("/tmp/out.txt")
-              val lines = try source.mkString finally source.close()
+              val lines = try source.getLines.toList.filter(_.contains("Rs")) finally source.close()
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "ouput" -> lines))))
             case Failure(e) =>
               //There was some isse processing the fileupload.
