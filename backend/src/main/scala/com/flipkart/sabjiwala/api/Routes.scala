@@ -35,7 +35,6 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
               val results = ParserService.parse(fileInfo.tmpFilePath)
               val ourResults = CatalogService.getDiscount(results)
-//              val bbresults = CatalogService.search("Fresho Mango Lalbagh Sindhura")
 //              println("Price and Name from bb")
 //              println(bbresults)
 
