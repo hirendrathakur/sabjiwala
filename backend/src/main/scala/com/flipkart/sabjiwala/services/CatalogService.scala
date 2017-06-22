@@ -33,8 +33,9 @@ object CatalogService {
     bbProductServiceResponse.results.data
   }
 
-  def getDiscount(purchasedProducts: List[Map[String, Any]]): UploadResponse = {
+  def getDiscount(purchasedPrdcts: Map[String, Any]): UploadResponse = {
     println("purchasedProducts")
+    val purchasedProducts = purchasedPrdcts.get("metaData").asInstanceOf[List[Map[String, Any]]]
     println(purchasedProducts)
     var potentialSavings = 0.0
     for(product <- purchasedProducts if product.nonEmpty && product("name").toString.nonEmpty) {
@@ -47,8 +48,9 @@ object CatalogService {
         potentialSavings = potentialSavings + product("price").toString.toDouble - closest.price.toDouble
       }
     }
+    val invoiceNumber = purchasedPrdcts.get("invoiceId").toString
+    val uploadResponse = UploadResponse(invoiceNumber, "10-June-2017", potentialSavings)
     potentialSavings = BigDecimal(potentialSavings).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
-    val uploadResponse = UploadResponse("BLR-WFLD-2017061098762", "10-June-2017", potentialSavings)
     return uploadResponse
   }
 

@@ -11,10 +11,14 @@ import scala.util.matching.Regex
   */
 object ParserService {
 
-  def parse(file:String): List[Map[String, Any]] ={
+  def parse(file:String):Map[String, Any] ={
+    val username = System.getProperty("user.name")
+    val outfileForTessarect = s"/Users/$username/Documents/read_${StringUtils.generateRandomStr(6)}"
+    var cmd = s"/Users/$username/Downloads/textcleaner -g -e stretch -f 25 -o 20 $file $outfileForTessarect.jpg"
+    var output = cmd.!!
     val outFile = s"/tmp/read_${StringUtils.generateRandomStr(6)}"
-    val cmd = s"tesseract $file $outFile -l eng -c preserve_interword_spaces=1"
-    val output = cmd.!!
+    cmd = s"tesseract $outfileForTessarect.jpg $outFile -l eng -c preserve_interword_spaces=1"
+    output = cmd.!!
     val source = scala.io.Source.fromFile(s"$outFile.txt")
     var lines :List[String] = List()
     var productLines :List[String] = List()
@@ -25,19 +29,21 @@ object ParserService {
 //      println(lines)
       productLines = lines.filter(_.contains("Rs"))
 
-      invoiceLine = lines.filter(_.contains("Invoice"))
+      invoiceLine = lines.filter(_.contains("Order ID"))
 //      println("invoice lines")
 //      println(invoiceLine)
 
     }
     finally source.close()
-    getFormatedResponse(productLines)
+    getFormatedResponse(productLines, invoiceLine)
   }
 
-  def getFormatedResponse(lines: List[String]): List[Map[String, Any]] ={
+  def getFormatedResponse(lines: List[String], invoiceLine:List[String]): Map[String, Any] ={
     val regex1 = ".+?(?=Rs)(.*)".r
     val regex2 = ".+?(?=Rs)".r
     val regex3 = "([0-9]*[.]?[0-9]+)".r
+    val invoiceRegex = "(.*) (.*)".r
+    val invoiceNumber = invoiceRegex.findFirstMatchIn(invoiceLine.head).get.group(2).toString
     val formattedLines = lines.map { line =>
       val group1 = getGroup(regex2,0,line).toString.trim
       val group2 = getGroup(regex1,1,line)
@@ -48,7 +54,8 @@ object ParserService {
       val firstIdx = group1.indexOfSlice(r1.findFirstIn(group1).getOrElse(""))
       Map("name" -> group1.substring(firstIdx), "price" -> price, "quantity" -> quantity)
     }
-    formattedLines.filter(_("name").nonEmpty)
+    val notNullData = formattedLines.filter(_("name").nonEmpty)
+    Map("metaData" -> notNullData, "invoiceId" -> invoiceNumber)
   }
 
   def getGroup(regex:Regex, key:Int, line: String):String ={
