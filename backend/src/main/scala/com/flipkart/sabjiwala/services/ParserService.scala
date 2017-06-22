@@ -12,9 +12,13 @@ import scala.util.matching.Regex
 object ParserService {
 
   def parse(file:String): List[String] ={
+    val username = System.getProperty("user.name")
+    val outFileForTesseract = s"/Users/$username/Documents/read_${StringUtils.generateRandomStr(6)}"
+    var cmd = s"/Users/$username/Downloads/textcleaner -g -e stretch -f 25 -o 20 $file $outFileForTesseract.jpg"
+    var output = cmd.!!
     val outFile = s"/tmp/read_${StringUtils.generateRandomStr(6)}"
-    val cmd = s"tesseract $file $outFile -l eng -c preserve_interword_spaces=1"
-    val output = cmd.!!
+    cmd = s"tesseract $outFileForTesseract.jpg $outFile -l eng -c preserve_interword_spaces=1"
+    output = cmd.!!
     val source = scala.io.Source.fromFile(s"$outFile.txt")
     val lines = try source.getLines.toList.filter(_.contains("Rs")) finally source.close()
     getFormatedResponse(lines)
