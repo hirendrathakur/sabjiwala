@@ -48,7 +48,7 @@ object CatalogService {
         potentialSavings = potentialSavings + product("price").toString.toDouble - closest.price.toDouble
       }
     }
-    val invoiceNumber = purchasedPrdcts.get("invoiceId").toString
+    val invoiceNumber = purchasedPrdcts.getOrElse("invoiceId","BLR-PW-234565494").toString
     val uploadResponse = UploadResponse(invoiceNumber, "10-June-2017", potentialSavings)
     potentialSavings = BigDecimal(potentialSavings).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
     return uploadResponse
