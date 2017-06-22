@@ -26,7 +26,7 @@ object PhonePeService {
         | "campaignId": "GROSCAN",
         | "user": {
         |   "type": "MERCHANT_USER_ID",
-        |   "id" : "ACMI7LHKCPRB7RC449EPS24CTU83NLQ4"
+        |   "id" : "$userId"
         | },
         | "amount": $amount,
         | "currencyCode": "INR"
