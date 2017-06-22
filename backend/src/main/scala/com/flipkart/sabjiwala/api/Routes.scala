@@ -28,6 +28,7 @@ class Routes extends FileDirective with JsonToEntityMarshaller {
           val fileInfo = postMap("file").right.get
           fileInfo.status match {
             case Success(_) =>
+              println(s"Upload Complete ${fileInfo.tmpFilePath} ")
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath))))
             case Failure(e) =>
               //There was some isse processing the fileupload.
