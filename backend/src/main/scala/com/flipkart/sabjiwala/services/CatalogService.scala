@@ -50,6 +50,7 @@ object CatalogService {
     }
     val invoiceNumber = purchasedPrdcts.get("invoiceId").toString
     val uploadResponse = UploadResponse(invoiceNumber, "10-June-2017", potentialSavings)
+    potentialSavings = BigDecimal(potentialSavings).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
     return uploadResponse
   }
 

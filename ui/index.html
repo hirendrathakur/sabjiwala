@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en-IN" class="gr__localhost"><head>
+    <meta charset="UTF-8">
     <meta name="theme-color" content="#2874f0" id="themeColor">
   	<meta name="viewport" content="width=device-width, minimum-scale=1.0, user-scalable=no">
     <link rel="icon" href="https://rukminim1.flixcart.com/www/25/25/promos/01/06/2017/3d74893c-9476-404c-a32f-7ba8359de6b5.png?q=100" type="image/x-icon">
@@ -87,20 +88,7 @@
       font-size: 14px;
     }
     </style>
-<style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
-.en-markup-crop-options {
-    top: 18px !important;
-    left: 50% !important;
-    margin-left: -100px !important;
-    width: 200px !important;
-    border: 2px rgba(255,255,255,.38) solid !important;
-    border-radius: 4px !important;
-}
-
-.en-markup-crop-options div div:first-of-type {
-    margin-left: 0px !important;
-}
-</style></head>
+</head>
   <body data-gr-c-s-loaded="true" style="">
     <div class="header" href="/">
         <a href="/" class="back-button">
@@ -111,15 +99,44 @@
         </a>
       </div>
     <div class="page-layout error-page">
-  <div class="content">
+  <div class="content" style="padding-left: 25px; padding-right: 25px">
    
       <center>
-      <form id="res">
-					<input type="file" name="file" accept="image/*" capture="camera" id="camera" class="btn btn-default" >
-        			
-        		</form>
-				<br>
-				<img id="frame" height="300">
+				
+        <div id="stage-scan" >
+          <input type="file" name="file" accept="image/*" capture="camera" id="camera" class="btn btn-default" >
+            <br>
+            <img id="frame" height="300">
+        </div>
+
+        <div id="stage-loading" style="display: none;" >
+          
+          <?xml version="1.0" encoding="utf-8"?><svg width='120px' height='120px' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="uil-ring-alt"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><circle cx="50" cy="50" r="40" stroke="#fcfcfc" fill="none" stroke-width="10" stroke-linecap="round"></circle><circle cx="50" cy="50" r="40" stroke="#2874f0" fill="none" stroke-width="6" stroke-linecap="round"><animate attributeName="stroke-dashoffset" dur="2s" repeatCount="indefinite" from="0" to="502"></animate><animate attributeName="stroke-dasharray" dur="2s" repeatCount="indefinite" values="150.6 100.4;1 250;150.6 100.4"></animate></circle></svg>
+
+          <p style="padding-top: 50px; color: grey;"> Procesing your Reciept </p>
+
+        </div>
+
+        <div id="stage-result" style="display: none;">
+          <img src="/banknotes-xxl.png" width="60%">
+          <p style="font-size: medium;"> Awww! You could have saved <span style="font-size: larger;">₹<span id="save-amount">100</span></span> if you had purchased this order via flipkart.  </p>
+          
+          <p>
+          Worry Not, we have credited you with <span style="font-size: larger;">₹<span id="credit-amount">10</span></span> in your phonepay wallet to help you make the next purcase on flipkart </p>
+
+          <p style="font-size: x-small; text-align: center; padding-top: 30px">Invoice #<span id="invoice-id">ABC</span> at <span id="store-name">Spar, Kormangla</span></p>
+
+        </div>
+
+        <div id="stage-error" style="display: none;">
+            <div class="image" width="100">
+              <svg width="77" height="36" viewBox="0 0 77 36" xmlns="http://www.w3.org/2000/svg"><g stroke="#979797" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M61.647 5.91c-.85-1.313-2.088-2.47-3.48-3.32-.93-.54-1.857-1.002-2.94-1.234-4.022-1.003-8.045.154-10.83 2.932L32.642 15.863c-4.408 4.398-4.408 11.497 0 15.82C34.73 33.763 37.59 35 40.61 35c3.017 0 5.8-1.157 7.967-3.318l7.04-7.022M27 12l-16.6 1.536c-5.928.7-10.102 6.042-9.3 11.905.357 2.807 1.8 5.43 4.087 7.218s5.078 2.565 7.99 2.22L26 34"></path><path d="M41.675 13.01c.685.372 1.324.815 1.907 1.318 2.22 1.916 3.62 4.71 3.632 7.84a10.796 10.796 0 0 1-3.11 7.715c-.55.56-1.15 1.052-1.788 1.475M63.91 15.72l11.546 2.667m-10.273-6.56l8.78-1.348m-10.687 9.714l7.21 5.188"></path></g></svg>
+            </div>
+            <div class="title">Oops! Something went wrong..."</div>
+            <br>
+        </div>
+
+
   </center>
 				
 
@@ -135,27 +152,45 @@
 
   camera.addEventListener('change', function(e) {
     var file = e.target.files[0]; 
-    // Do something with the image file.
-    frame.src = URL.createObjectURL(file);
-
+    // frame.src = URL.createObjectURL(file);
 
     var formData = new FormData();
     formData.append("file", file);
     formData.append("name", "lorem");
 
+    $("#stage-scan").hide()
+    $("#stage-loading").show()
+
     $.ajax({
-        url: "http://localhost:8080/upload",
+        url: "http://"+location.hostname+":8080/upload",
         type: 'POST',
         data: formData,
         dataType: "json",
         contentType: false,
-        async: false,
+        async: true,
         success: function (result) {
             console.log(result)
+            console.log(result.response.data.output.totalSavings)
+
+            $("#save-amount").html(result.response.data.output.totalSavings)
+            $("#credit-amount").html(result.response.data.output.totalSavings / 10)
+            $("#invoice-id").html(result.response.data.output.invoiceNo + " dated " + result.response.data.output.invoiceDate)
+            $("#store-name").html("BigBasket")
+
+            $("#stage-result").show()
+            $("#stage-loading").hide()
+
+        },
+        error: function (jqXHR, exception) {
+            console.log(jqXHR);
+            $("#stage-error").show()
+            $("#stage-loading").hide()
         },
         cache: false,
         processData: false
     });
+
+
 
 
   });
