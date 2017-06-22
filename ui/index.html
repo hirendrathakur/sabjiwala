@@ -158,18 +158,16 @@
     formData.append("file", file);
     formData.append("name", "lorem");
 
+    $("#stage-scan").hide()
+    $("#stage-loading").show()
+
     $.ajax({
         url: "http://"+location.hostname+":8080/upload",
         type: 'POST',
         data: formData,
         dataType: "json",
         contentType: false,
-        async: false,
-        beforeSend: function() {
-            $("#stage-scan").hide()
-            $("#stage-loading").show()
-          console.log("before send")
-         },
+        async: true,
         success: function (result) {
             console.log(result)
             console.log(result.response.data.output.totalSavings)
@@ -191,6 +189,8 @@
         cache: false,
         processData: false
     });
+
+
 
 
   });
