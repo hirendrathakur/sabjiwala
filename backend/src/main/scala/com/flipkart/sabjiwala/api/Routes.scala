@@ -5,9 +5,12 @@ import java.io.File
 import akka.http.scaladsl.model.{HttpEntity, HttpResponse, MediaTypes, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import com.flipkart.sabjiwala.directives.FileDirective
+import com.flipkart.sabjiwala.services.ParserService
+import com.flipkart.sabjiwala.utils.StringUtils
 import com.flipkart.sabjiwala.wire.{GenericResponse, JsonToEntityMarshaller, Response}
 
 import scala.util.{Failure, Success}
+
 
 /**
   * Created by kinshuk.bairagi on 22/06/17.
@@ -29,7 +32,8 @@ class Routes extends FileDirective with JsonToEntityMarshaller {
           fileInfo.status match {
             case Success(_) =>
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
-              complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath))))
+              val results = ParserService.parse(fileInfo.tmpFilePath)
+              complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "ouput" -> results))))
             case Failure(e) =>
               //There was some isse processing the fileupload.
               println("Upload File Error", e)
