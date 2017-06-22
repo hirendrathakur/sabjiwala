@@ -4,8 +4,9 @@ import java.io.File
 
 import akka.http.scaladsl.model.{HttpEntity, HttpResponse, MediaTypes, StatusCodes}
 import akka.http.scaladsl.server.Directives._
+import akka.stream.Materializer
 import com.flipkart.sabjiwala.directives.FileDirective
-import com.flipkart.sabjiwala.services.ParserService
+import com.flipkart.sabjiwala.services.{CatalogService, ParserService}
 import com.flipkart.sabjiwala.utils.StringUtils
 import com.flipkart.sabjiwala.wire.{GenericResponse, JsonToEntityMarshaller, Response}
 
@@ -15,7 +16,7 @@ import scala.util.{Failure, Success}
 /**
   * Created by kinshuk.bairagi on 22/06/17.
   */
-class Routes extends FileDirective with JsonToEntityMarshaller {
+class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntityMarshaller {
 
   val route =
     pathSingleSlash {
@@ -33,7 +34,12 @@ class Routes extends FileDirective with JsonToEntityMarshaller {
             case Success(_) =>
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
               val results = ParserService.parse(fileInfo.tmpFilePath)
-              complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "output" -> results))))
+              val ourResults = CatalogService.getDiscount(results)
+//              val bbresults = CatalogService.search("Fresho Mango Lalbagh Sindhura")
+//              println("Price and Name from bb")
+//              println(bbresults)
+
+              complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "output" -> ourResults))))
             case Failure(e) =>
               //There was some isse processing the fileupload.
               println("Upload File Error", e)
