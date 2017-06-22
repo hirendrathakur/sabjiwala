@@ -1,6 +1,5 @@
 package com.flipkart.sabjiwala.services
 
-import java.io.File
 import scala.sys.process._
 
 import com.flipkart.sabjiwala.utils.StringUtils
@@ -11,12 +10,13 @@ import com.flipkart.sabjiwala.utils.StringUtils
 object ParserService {
 
   def parse(file:String): List[String] ={
-    val outFile = s"/tmp/read_${StringUtils.generateRandomStr(6)}.txt"
+    val outFile = s"/tmp/read_${StringUtils.generateRandomStr(6)}"
     val cmd = s"tesseract $file $outFile -l eng -c preserve_interword_spaces=1"
     val output = cmd.!!
-    val source = scala.io.Source.fromFile(outFile)
+    val source = scala.io.Source.fromFile(s"$outFile.txt")
     val lines = try source.getLines.toList.filter(_.contains("Rs")) finally source.close()
 
     lines
   }
+
 }

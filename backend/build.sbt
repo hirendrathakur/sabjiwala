@@ -21,3 +21,5 @@ libraryDependencies ++= Seq(
 
 
 )
+
+mainClass in (Compile, run) := Some("com.flipkart.sabjiwala.SabjiWala")

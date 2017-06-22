@@ -38,7 +38,7 @@ trait FileDirective {
       entity(as[Multipart.FormData]) { formData: Multipart.FormData =>
         val fileNameMap = formData.parts.mapAsync(1) { part =>
           if (part.filename.isDefined) {
-            val targetPath = File.createTempFile(s"upload_${part.name}_", part.filename.getOrElse(""))
+            val targetPath = File.createTempFile(s"upload_${part.name}_", part.filename.getOrElse("").replaceAll(" ",""))
             val written = part.entity.dataBytes.runWith(FileIO.toFile(targetPath))
             written.map(written =>
               Map(part.name -> Right(FileInfo(part.filename.get, targetPath.getAbsolutePath, written.status))))
