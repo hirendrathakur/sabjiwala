@@ -1,43 +1,132 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>SabjiWala</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+<html lang="en-IN" class="gr__localhost"><head>
+    <meta name="theme-color" content="#2874f0" id="themeColor">
+  	<meta name="viewport" content="width=device-width, minimum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="https://rukminim1.flixcart.com/www/25/25/promos/01/06/2017/3d74893c-9476-404c-a32f-7ba8359de6b5.png?q=100" type="image/x-icon">
+    <script src="https://img1a.flixcart.com/www/linchpin/batman-returns/raven/raven.3.9.1.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
 
-<style type="text/css">
-	 html, body, .container-table {
-    height: 100%;
-
+    <script>
+  		window.Raven.config('https://9f6f0bdf154e438ca8e63ea428bc890b@sentry.flipkart.com/11').install();
+  		window.addEventListener('unhandledrejection', function(event) {
+  			window.Raven.captureException(event.reason);
+  		});
+      var logError = function(){
+        var hostname = typeof window !== "undefined" && typeof window.location !== "undefined" && window.location.host || '';
+        if(typeof window !== "undefined"){
+          var url = window.location && window.location.search;
+          var error =  'invalid route: ' + hostname + (url && decodeURIComponent(url).replace("?originalUrl=",""))  || '';
+    		    window.Raven &&
+    		    window.Raven.captureException &&
+            window.Raven.captureException(error);
+          }
+      }
+      logError();
+    </script>
+  <style>
+    html, body{
+      height:100%;
+      margin:0px;
+      box-sizing:border-box;
+      -webkit-user-select:none;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .error-page {
+      background-color: #efefef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height:100%;
+    }
+    .content {
+      text-align: center;
+      padding-bottom: 80px;
+    }
+    .image {
+      vertical-align: middle;
+      padding-bottom: 30px;
+      padding-left:15px;
+    }
+    .header{
+      color: #eaeaea;
+      width: 100%;
+      height: 52px;
+      background-color: #2874f0;
+    }
+    .back-button {
+      padding: 13px 0px 0px 15px;
+      margin: auto;
+      display: inline-block;
+      width: 42px;
+    }
+    .logo {
+      margin: auto;
+      padding: 13px 0px 0px 0px;
+      display: inline-block;
+      width: 42px;
+    }
+    .title {
+      font-size: 17px;
+      font-weight: 500;
+      color: #717171;
+      padding-bottom: 8px;
+    }
+    .subtitle {
+      color: #909090;
+      font-size: 13px;
+      width: 70%;
+      display: inline-block;
+    }
+    .action {
+      text-transform: uppercase;
+      margin-top: 20px;
+      padding: 15px;
+      color: #2874f0;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    </style>
+<style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -100px !important;
+    width: 200px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
 }
-.container-table {
-    display: table;
+
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
 }
-.vertical-center-row {
-    display: table-cell;
-    vertical-align: middle;
-}
-</style>
-
-</head>
-<body>
-
-
-<div class="container container-table">
-    <div class="row justify-content-md-center vertical-center-row">
-        <div class="col-md-12 text-center">
-        		<form id="res">
+</style></head>
+  <body data-gr-c-s-loaded="true" style="">
+    <div class="header" href="/">
+        <a href="/" class="back-button">
+          <svg width="19" height="19" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg"><path d="M17.556 7.847H1M7.45 1L1 7.877l6.45 6.817" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+        </a>
+        <a href="/" class="logo">
+          <img class="logo-img" src="https://rukminim1.flixcart.com/www/192/192/promos/01/06/2017/3d74893c-9476-404c-a32f-7ba8359de6b5.png?q=100" width="25px" height="25px">
+        </a>
+      </div>
+    <div class="page-layout error-page">
+  <div class="content">
+   
+      <center>
+      <form id="res">
 					<input type="file" name="file" accept="image/*" capture="camera" id="camera" class="btn btn-default" >
         			
         		</form>
 				<br>
 				<img id="frame" height="300">
-        </div>
-    </div>
+  </center>
+				
+
+
+  </div>
 </div>
+  
 
 
 <script>
@@ -72,6 +161,6 @@
   });
 </script>
 
+ 
+</body></html>
 
-</body>
-</html>
