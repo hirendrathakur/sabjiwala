@@ -33,7 +33,7 @@ class Routes extends FileDirective with JsonToEntityMarshaller {
             case Success(_) =>
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
               val results = ParserService.parse(fileInfo.tmpFilePath)
-              complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "ouput" -> results))))
+              complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "output" -> results))))
             case Failure(e) =>
               //There was some isse processing the fileupload.
               println("Upload File Error", e)
