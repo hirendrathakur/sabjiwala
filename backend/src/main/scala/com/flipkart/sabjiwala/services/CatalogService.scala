@@ -47,6 +47,7 @@ object CatalogService {
         potentialSavings = potentialSavings + product("price").toString.toDouble - closest.price.toDouble
       }
     }
+    potentialSavings = BigDecimal(potentialSavings).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
     val uploadResponse = UploadResponse("BLR-WFLD-2017061098762", "10-June-2017", potentialSavings)
     return uploadResponse
   }
