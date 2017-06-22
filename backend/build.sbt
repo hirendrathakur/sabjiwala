@@ -15,3 +15,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test withSources() withJavadoc()
 )
 
+libraryDependencies ++= Seq(
+"com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.8.7",
+  "commons-lang" % "commons-lang" % "2.6"
+
+
+)

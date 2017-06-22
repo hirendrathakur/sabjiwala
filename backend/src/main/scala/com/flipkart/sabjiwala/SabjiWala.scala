@@ -1,7 +1,9 @@
+package com.flipkart.sabjiwala
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Directives.{complete, get, pathSingleSlash}
 import akka.stream.ActorMaterializer
+import com.flipkart.sabjiwala.api.Routes
 
 /**
   * Created by kinshuk.bairagi on 22/06/17.
