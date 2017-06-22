@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 import com.flipkart.sabjiwala.utils.StringUtils._
 
 import scala.concurrent.{Await, Future}
-import HttpService.actorSystem
+import HttpService._
 import akka.http.scaladsl.model.headers.RawHeader
 import com.flipkart.sabjiwala.models.{BbData, BbProductServiceResponse}
 import com.flipkart.sabjiwala.utils.StringUtils._
@@ -20,8 +20,6 @@ import com.flipkart.sabjiwala.utils.StringUtils._
   * Created by saurabh.mimani on 22/06/17.
   */
 object CatalogService {
-
-  implicit val materializer = ActorMaterializer()
 
   def search(query: String)(implicit mat: Materializer): List[BbData] = {
     val responseFuture: Future[HttpResponse] =
