@@ -27,7 +27,7 @@ object ParserService {
       lines = source.getLines.toList
 //      println("lines")
 //      println(lines)
-      productLines = lines.filter(_.contains("Rs"))
+      productLines = lines.filter(l => l.contains("Rs") && !l.contains("Total") && !l.contains("Payable"))
 
       invoiceLine = lines.filter(_.contains("Order ID"))
 //      println("invoice lines")
