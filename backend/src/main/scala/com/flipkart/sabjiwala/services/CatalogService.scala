@@ -35,7 +35,7 @@ object CatalogService {
 
   def getDiscount(purchasedPrdcts: Map[String, Any]): UploadResponse = {
     println("purchasedProducts")
-    val purchasedProducts = purchasedPrdcts.get("metaData").asInstanceOf[List[Map[String, Any]]]
+    val purchasedProducts = purchasedPrdcts.getOrElse("metaData",List[Map[String, Any]]()).asInstanceOf[List[Map[String, Any]]]
     println(purchasedProducts)
     var potentialSavings = 0.0
     for(product <- purchasedProducts if product.nonEmpty && product("name").toString.nonEmpty) {
