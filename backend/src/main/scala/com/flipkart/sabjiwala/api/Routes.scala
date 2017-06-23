@@ -15,7 +15,7 @@ import scala.util.{Failure, Success}
   */
 class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntityMarshaller {
 
-  val route =
+  val route = withoutRequestTimeout {
     pathSingleSlash {
       get {
         complete {
@@ -43,6 +43,6 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
         }
       }
     }
-
+  }
 
 }
