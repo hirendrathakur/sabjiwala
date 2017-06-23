@@ -11,6 +11,5 @@ case class Invoice (
                    invoiceDate: String,
                    invoiceNumber: String,
                    amountSaved: Double,
-                   lastUpdatedTS: Long,
                    creationTS: Long
                    )

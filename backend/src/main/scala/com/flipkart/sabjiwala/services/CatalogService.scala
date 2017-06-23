@@ -13,7 +13,7 @@ import com.flipkart.sabjiwala.utils.StringUtils._
 import scala.concurrent.{Await, Future}
 import HttpService._
 import akka.http.scaladsl.model.headers.RawHeader
-import com.flipkart.sabjiwala.models.{BbData, BbProductServiceResponse}
+import com.flipkart.sabjiwala.models.{BbData, BbProductServiceResponse, RawInvoice}
 import com.flipkart.sabjiwala.utils.StringUtils._
 
 /**
@@ -31,25 +31,21 @@ object CatalogService {
     bbProductServiceResponse.results.data
   }
 
-  def getDiscount(purchasedPrdcts: Map[String, Any]): UploadResponse = {
-    println("purchasedProducts")
-    val purchasedProducts = purchasedPrdcts.getOrElse("metaData",List[Map[String, Any]]()).asInstanceOf[List[Map[String, Any]]]
-    println(purchasedProducts)
+  def getDiscount(rawInvoice: RawInvoice): UploadResponse = {
+    println("purchasedProducts : " + rawInvoice.items)
     var potentialSavings = 0.0
-    for(product <- purchasedProducts if product.nonEmpty && product("name").toString.nonEmpty) {
-      val result = search(product("name").asInstanceOf[String])
+    for(product <- rawInvoice.items if product.productName.nonEmpty) {
+      val result = search(product.productName)
       if(result.length > 0){
-        println(s"result for ${product("name").asInstanceOf[String]} and price ${product("price")}")
+        println(s"result for ${product.productName} and price ${product.amount}")
         println(result)
-        val closest = result.minBy(v => math.abs(v.price.toDouble - product("price").toString.toDouble))
+        val closest = result.minBy(v => math.abs(v.price.toDouble - product.amount))
         println(closest)
-        potentialSavings = potentialSavings + product("price").toString.toDouble - closest.price.toDouble
+        potentialSavings = potentialSavings + product.amount - closest.price.toDouble
       }
     }
-    val invoiceNumber = purchasedPrdcts.getOrElse("invoiceId","BLR-PW-234565494").toString
-    val uploadResponse = UploadResponse(invoiceNumber, "2017-06-20", potentialSavings)
     potentialSavings = BigDecimal(potentialSavings).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
-    return uploadResponse
+    UploadResponse(rawInvoice.invoiceId, "2017-06-20", potentialSavings)
   }
 
   case class UploadResponse(
