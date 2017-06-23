@@ -162,7 +162,7 @@
     $("#stage-loading").show()
 
     $.ajax({
-        url: "http://"+location.hostname+":8080/upload",
+        url: "http://"+location.hostname+":9090/upload",
         type: 'POST',
         data: formData,
         dataType: "json",

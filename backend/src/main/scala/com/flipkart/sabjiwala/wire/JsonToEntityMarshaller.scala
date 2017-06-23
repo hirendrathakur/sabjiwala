@@ -15,10 +15,11 @@ package com.flipkart.sabjiwala.wire
 import akka.http.scaladsl.marshalling.{PredefinedToEntityMarshallers, ToEntityMarshaller}
 import akka.http.scaladsl.model.MediaTypes
 import akka.http.scaladsl.unmarshalling.{FromEntityUnmarshaller, PredefinedFromEntityUnmarshallers}
-import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import GenericJsonSupport._
+
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
@@ -44,6 +45,7 @@ object GenericJsonSupport {
   val mapper = new ObjectMapper() with ScalaObjectMapper
   mapper.registerModules(jacksonModules: _*)
   mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+  mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
 
   val m: mutable.Map[Class[_], ToEntityMarshaller[_]] = mutable.Map.empty[Class[_], ToEntityMarshaller[_]]
   val um: mutable.Map[Class[_], FromEntityUnmarshaller[_]] = mutable.Map.empty[Class[_], FromEntityUnmarshaller[_]]

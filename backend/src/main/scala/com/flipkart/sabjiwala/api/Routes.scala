@@ -6,7 +6,7 @@ import akka.http.scaladsl.model.{HttpEntity, HttpResponse, MediaTypes, StatusCod
 import akka.http.scaladsl.server.Directives._
 import akka.stream.Materializer
 import com.flipkart.sabjiwala.directives.FileDirective
-import com.flipkart.sabjiwala.services.{CatalogService, ParserService}
+import com.flipkart.sabjiwala.services.{CatalogService, ParserService, SabjiWalaService}
 import com.flipkart.sabjiwala.utils.StringUtils
 import com.flipkart.sabjiwala.wire.{GenericResponse, JsonToEntityMarshaller, Response}
 
@@ -33,11 +33,9 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
           fileInfo.status match {
             case Success(_) =>
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
-              val results = ParserService.parse(fileInfo.tmpFilePath)
-              val ourResults = CatalogService.getDiscount(results)
+              val ourResults = SabjiWalaService.processReciept(fileInfo.tmpFilePath)
 //              println("Price and Name from bb")
 //              println(bbresults)
-
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "output" -> ourResults))))
             case Failure(e) =>
               //There was some isse processing the fileupload.
