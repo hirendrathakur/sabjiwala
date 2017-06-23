@@ -7,7 +7,7 @@ import com.typesafe.config.{Config, ConfigFactory}
   */
 object DaoFactory {
 
-  val mySQLFactory = new MySQLFactory("localhost", "sabjiWalaDabba", "root", "", ConfigFactory.empty())
+  val mySQLFactory = new MySQLFactory("localhost", "sabjiWalaThela", "root", "", ConfigFactory.empty())
 
   val invoiceStore = new InvoiceStore("invoiceStore", mySQLFactory)
 

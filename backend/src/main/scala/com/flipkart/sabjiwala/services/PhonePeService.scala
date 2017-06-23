@@ -33,6 +33,8 @@ object PhonePeService {
         |}
       """.stripMargin
 
+    println("Phonepe Payload : " + payload)
+
     val request = HttpRequest(uri = url,entity = HttpEntity(MediaTypes.`application/json`, payload) , method = HttpMethods.POST)
 
     val responseFuture = Http().singleRequest(request)
