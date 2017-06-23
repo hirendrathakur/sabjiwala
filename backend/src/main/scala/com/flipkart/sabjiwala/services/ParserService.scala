@@ -22,7 +22,7 @@ object ParserService {
 private object BigBasketParserService extends ParserModel {
 
   override def parse(lines: List[String]): Invoice = {
-    val productLines = lines.filter(l => l.contains("Rs") && !l.toLowerCase.contains("Total") && !l.toLowerCase.contains("payable"))
+    val productLines = lines.filter(l => l.contains("Rs") && !l.toLowerCase.contains("total") && !l.toLowerCase.contains("payable"))
     val invoiceLine = lines.filter(_.contains("Order ID"))
     getFormatedResponse(productLines, invoiceLine)
   }
