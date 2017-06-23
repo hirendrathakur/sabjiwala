@@ -20,6 +20,8 @@ object SabjiWalaService {
     val bestModel = ParserService("bb")
     val results = bestModel.parse(lines)
 
+    println("Scan Results: " + results)
+
     val updatedInvoice = CatalogService.getDiscount(results)
     val cashbackAmount =  math.abs((updatedInvoice.savings * 100 /10).toInt)
 
@@ -27,16 +29,12 @@ object SabjiWalaService {
       val cashback = PhonePeService.cashback("ACMI7LHKCPRB7RC449EPS24CTU83NLQ4", StringUtils.generateRandomStr(8), cashbackAmount)
       ConnektService.sendPN("ACMI7LHKCPRB7RC449EPS24CTU83NLQ4",cashbackAmount.toString)
       println(cashback)
-
     }
-//    val future = Future {
-      moveFile(file, updatedInvoice.invoiceId)
-//    }
     Try_ {
+      moveFile(file, updatedInvoice.invoiceId)
       for (item <- updatedInvoice.items) {
         DaoFactory.invoiceLineStore.put(InvoiceLineRecord(updatedInvoice.invoiceId, item.productName, item.originalPrice, item.quantity, item.flipkartPrice))
       }
-
       DaoFactory.invoiceStore.put(InvoiceRecord(updatedInvoice.invoiceId, "2017-06-23", "Bigbasket", 0.0, updatedInvoice.savings))
     }
     updatedInvoice.copy(earning = cashbackAmount/100.0)
