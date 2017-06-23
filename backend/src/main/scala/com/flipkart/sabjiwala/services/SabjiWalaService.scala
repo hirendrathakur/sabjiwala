@@ -17,8 +17,6 @@ object SabjiWalaService {
     val results = bestModel.parse(lines)
 
     val updatedInvoice = CatalogService.getDiscount(results)
-
-    println("Savings: = " + updatedInvoice.savings)
     val cashbackAmount =  math.abs((updatedInvoice.savings * 100 /10).toInt)
 
     if(cashbackAmount > 0 ) {
@@ -27,7 +25,7 @@ object SabjiWalaService {
     }
 
     Try_ {
-      for (item <- results.items) {
+      for (item <- updatedInvoice.items) {
         DaoFactory.invoiceLineStore.put(InvoiceLineRecord(updatedInvoice.invoiceId, item.productName, item.originalPrice, item.quantity, item.flipkartPrice))
       }
 
