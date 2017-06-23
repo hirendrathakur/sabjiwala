@@ -25,7 +25,9 @@ object SabjiWalaService {
 
     if(cashbackAmount > 0 ) {
       val cashback = PhonePeService.cashback("ACMI7LHKCPRB7RC449EPS24CTU83NLQ4", StringUtils.generateRandomStr(8), cashbackAmount)
+      ConnektService.sendPN("ACMI7LHKCPRB7RC449EPS24CTU83NLQ4",cashbackAmount.toString)
       println(cashback)
+
     }
 //    val future = Future {
       moveFile(file, updatedInvoice.invoiceId)

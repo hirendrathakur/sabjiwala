@@ -14,7 +14,7 @@ import com.flipkart.sabjiwala.utils.StringUtils
 object ImageProcessor {
 
   private val username = System.getProperty("user.name")
-  private val baseDir = s"/Users/$username/.sabjiwala/"
+  private val baseDir = s"/Users/$username/.sabjiwala"
   private val makeBaseDir = s"mkdir -p $baseDir".!!
 
   def apply(file:String):List[String] = {

@@ -21,11 +21,7 @@ libraryDependencies ++= Seq(
   "mysql" % "mysql-connector-java" % "5.1.37",
   "org.apache.commons" % "commons-dbcp2" % "2.1.1",
   "javax.persistence" % "persistence-api" % "1.0.2",
-  "org.springframework" % "spring-jdbc" % "4.2.3.RELEASE",
-  "org.slf4j" % "slf4j-simple" % "1.7.25"
-
-
-
+  "org.springframework" % "spring-jdbc" % "4.2.3.RELEASE"
 )
 
 mainClass in (Compile, run) := Some("com.flipkart.sabjiwala.SabjiWala")
