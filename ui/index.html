@@ -132,7 +132,10 @@
       <center>
 				
         <div id="stage-scan"  >
-            <input type="file" name="file" accept="image/*" capture="camera" id="camera" class="btn btn-default" >
+
+            <div class="_1b9ZOM _3EakSC" style="margin-top: 20px"><a class="_3m5t30" id="capture-btn" >Capture Receipt</a></div>
+
+            <input type="file" id="capture-input" name="file" accept="image/*" capture="camera" id="camera" class="btn btn-default" style="display: none;" >
             <!-- <br> -->
             <!-- <img id="frame" height="300"> -->
         </div>
@@ -209,8 +212,12 @@
      $(".error-page").css({"display" : "block"})
   })
 
-  camera.addEventListener('change', function(e) {
-    var file = e.target.files[0]; 
+  $("#capture-btn").click(function(){
+    $("#capture-input").click();
+  })
+
+  $("#capture-input").on('change', function(e){
+      var file = e.target.files[0]; 
     // frame.src = URL.createObjectURL(file);
 
     var formData = new FormData();
@@ -260,10 +267,9 @@
         processData: false
     });
 
+  })
 
-
-
-  });
+ 
 </script>
 
  
