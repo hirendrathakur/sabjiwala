@@ -32,7 +32,6 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
               val ourResults = SabjiWalaService.processReciept(fileInfo.tmpFilePath)
 
-//              DaoFactory.invoiceStore.put(Invoice("Bigbasket", ourResults.invoiceDate, ourResults.invoiceId, ourResults.totalSavings, System.currentTimeMillis(), System.currentTimeMillis()))
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", ourResults)))
             case Failure(e) =>
               //There was some isse processing the fileupload.

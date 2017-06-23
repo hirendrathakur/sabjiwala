@@ -31,26 +31,24 @@ object CatalogService {
     bbProductServiceResponse.results.data
   }
 
-  def getDiscount(rawInvoice: Invoice): UploadResponse = {
+  def getDiscount(rawInvoice: Invoice): Invoice = {
     println("purchasedProducts : " + rawInvoice.items)
     var potentialSavings = 0.0
-    for(product <- rawInvoice.items if product.productName.nonEmpty) {
+    val updatedItems = for(product <- rawInvoice.items if product.productName.nonEmpty) yield {
       val result = search(product.productName)
-      if(result.length > 0){
+      if (result.length > 0) {
         println(s"result for ${product.productName} and price ${product.originalPrice}")
         println(result)
         val closest = result.minBy(v => math.abs(v.price.toDouble - product.originalPrice))
         println(closest)
         potentialSavings = potentialSavings + product.originalPrice - closest.price.toDouble
-      }
+        product.copy(flipkartPrice = closest.price.toDouble)
+      } else
+        product
     }
+
     potentialSavings = BigDecimal(potentialSavings).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
-    UploadResponse(rawInvoice.invoiceId, "2017-06-20", potentialSavings)
+    rawInvoice.copy(savings = potentialSavings, items = updatedItems)
   }
 
-  case class UploadResponse(
-                            invoiceNo: String,
-                            invoiceDate: String,
-                            totalSavings: Double
-                           )
 }
