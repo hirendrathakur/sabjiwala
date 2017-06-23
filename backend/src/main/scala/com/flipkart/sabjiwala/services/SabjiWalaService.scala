@@ -1,6 +1,7 @@
 package com.flipkart.sabjiwala.services
 
-import com.flipkart.sabjiwala.models.Invoice
+import com.flipkart.sabjiwala.dao.DaoFactory
+import com.flipkart.sabjiwala.models.{Invoice, InvoiceLineRecord, InvoiceRecord}
 
 /**
   * Created by kinshuk.bairagi on 23/06/17.
@@ -13,8 +14,13 @@ object SabjiWalaService {
     val bestModel = ParserService("bb")
     val results = bestModel.parse(lines)
 
-    val discount = CatalogService.getDiscount(results)
+    val updatedInvoice = CatalogService.getDiscount(results)
 
-    results.copy(savings = discount.totalSavings, invoiceDate = discount.invoiceDate)
+    for(item <- results.items){
+      DaoFactory.invoiceLineStore.put(InvoiceLineRecord(updatedInvoice.invoiceId, item.productName, item.originalPrice, item.quantity, item.flipkartPrice))
+    }
+
+    DaoFactory.invoiceStore.put(InvoiceRecord(updatedInvoice.invoiceId, "2017-06-23", "Bigbasket", 0.0, updatedInvoice.savings))
+    updatedInvoice
   }
 }
