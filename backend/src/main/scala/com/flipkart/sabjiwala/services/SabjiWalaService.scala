@@ -19,7 +19,7 @@ object SabjiWalaService {
     val lines = ImageProcessor(file)
     val bestModel = ParserService("bb")
     val results = bestModel.parse(lines)
-    val accid = "ACC14134845961631669"
+    val accid = "ACC14134845961631669" // ACMI7LHKCPRB7RC449EPS24CTU83NLQ4
 
     println("Scan Results: " + results)
 
