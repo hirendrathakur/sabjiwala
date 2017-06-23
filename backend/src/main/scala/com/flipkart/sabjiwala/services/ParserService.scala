@@ -1,12 +1,12 @@
 package com.flipkart.sabjiwala.services
 
-import com.flipkart.sabjiwala.models.{Invoice, InvoiceLine}
+import com.flipkart.sabjiwala.models.{Invoice, InvoiceLine, RawInvoice}
 import com.flipkart.sabjiwala.utils.Wrappers._
 
 import scala.util.matching.Regex
 
 trait ParserModel {
-  def parse(lines: List[String]): Invoice
+  def parse(lines: List[String]): RawInvoice
 }
 
 object ParserService {
@@ -21,13 +21,13 @@ object ParserService {
 
 private object BigBasketParserService extends ParserModel {
 
-  override def parse(lines: List[String]): Invoice = {
+  override def parse(lines: List[String]): RawInvoice = {
     val productLines = lines.filter(l => l.contains("Rs") && !l.contains("Total") && !l.contains("Payable"))
     val invoiceLine = lines.filter(_.contains("Order ID"))
     getFormatedResponse(productLines, invoiceLine)
   }
 
-  private def getFormatedResponse(lines: List[String], invoiceLine: List[String]): Invoice = {
+  private def getFormatedResponse(lines: List[String], invoiceLine: List[String]): RawInvoice = {
     val regex1 = ".+?(?=Rs)(.*)".r
     val regex2 = ".+?(?=Rs)".r
     val regex3 = "([0-9]*[.]?[0-9]+)".r
@@ -45,7 +45,7 @@ private object BigBasketParserService extends ParserModel {
     }
     val notNullData = formattedLines.filter(_.productName.nonEmpty)
 
-    Invoice(invoiceId = invoiceNumber, storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
+    RawInvoice(invoiceId = invoiceNumber, storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
   }
 
   def getGroup(regex: Regex, key: Int, line: String): String = {

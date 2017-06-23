@@ -5,8 +5,14 @@ import java.io.File
 import akka.http.scaladsl.model.{HttpEntity, HttpResponse, MediaTypes, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.stream.Materializer
+import com.flipkart.sabjiwala.dao.DaoFactory
 import com.flipkart.sabjiwala.directives.FileDirective
+<<<<<<< HEAD
 import com.flipkart.sabjiwala.services.{CatalogService, ParserService, SabjiWalaService}
+=======
+import com.flipkart.sabjiwala.models.Invoice
+import com.flipkart.sabjiwala.services.{CatalogService, ParserService}
+>>>>>>> 5269f50d20404ef5ace5296b0a43878799af5285
 import com.flipkart.sabjiwala.utils.StringUtils
 import com.flipkart.sabjiwala.wire.{GenericResponse, JsonToEntityMarshaller, Response}
 
@@ -34,8 +40,8 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
             case Success(_) =>
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
               val ourResults = SabjiWalaService.processReciept(fileInfo.tmpFilePath)
-//              println("Price and Name from bb")
-//              println(bbresults)
+
+//              DaoFactory.invoiceStore.put(Invoice("Bigbasket", ourResults.invoiceDate, ourResults.invoiceId, ourResults.totalSavings, System.currentTimeMillis(), System.currentTimeMillis()))
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "output" -> ourResults))))
             case Failure(e) =>
               //There was some isse processing the fileupload.
