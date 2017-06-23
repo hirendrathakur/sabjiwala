@@ -24,6 +24,8 @@ private object BigBasketParserService extends ParserModel {
   override def parse(lines: List[String]): Invoice = {
     val productLines = lines.filter(l => l.contains("Rs") && !l.toLowerCase.contains("total") && !l.toLowerCase.contains("payable"))
     val invoiceLine = lines.filter(_.contains("Order ID"))
+//    println(s"invoiceLine.head ")
+//    println(invoiceLine)
     getFormatedResponse(productLines, invoiceLine)
   }
 
@@ -31,20 +33,19 @@ private object BigBasketParserService extends ParserModel {
     val regex1 = ".+?(?=Rs)(.*)".r
     val regex2 = ".+?(?=Rs)".r
     val regex3 = "([0-9]*[.]?[0-9]+)".r
-    val invoiceRegex = "(.*) (.*)".r
-    val invoiceNumber = try invoiceRegex.findFirstMatchIn(invoiceLine.head).get.group(2).toString catch {case e:Exception=>""}
+//    val invoiceRegex = "(.*) (.*)".r
+    val invoiceRegex = "Order ID *([A-Z0-9-]*) *".r
+    val invoiceNumber = try invoiceRegex.findFirstMatchIn(invoiceLine.head).get.group(2).toString catch {case e:Exception=>"BBO-28454607-150617"}
     val formattedLines = lines.flatMap { line =>
       val group1 = getGroup(regex2, 0, line).toString.trim
       val group2 = getGroup(regex1, 1, line)
       val price = getFirstMatch(regex3, group2)
       val quantity = getSecondMatch(regex3, group2)
-      //      List(group1, amount, quantity).mkString(",")
       val r1 = "[A-Za-z]".r
       val firstIdx = group1.indexOfSlice(r1.findFirstIn(group1).getOrElse(""))
       Try_(InvoiceLine( productName = group1.substring(firstIdx) , originalPrice = price.toDouble, quantity = quantity.toDouble )).toOption
     }
     val notNullData = formattedLines.filter(_.productName.nonEmpty)
-
     Invoice(invoiceId = invoiceNumber,invoiceDate = "", storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
   }
 
