@@ -10,14 +10,14 @@ class InvoiceStore(table: String, mysqlFactory: MySQLFactory) extends MySQLDao {
 
   private val mysqlHelper = mysqlFactory
 
-  def get(key: String): Option[Object] = {
+  def get(invoiceNumber: String): Option[InvoiceRecord] = {
     implicit val j = mysqlHelper.getJDBCInterface
     val q =
       s"""
-         |SELECT * FROM $table WHERE `key` = ?
+         |SELECT * FROM $table WHERE `invoiceNumber` = ?
       """.stripMargin
     try {
-      query[Object](q, key)
+      query[InvoiceRecord](q, invoiceNumber)
     } catch {
       case e: DataAccessException =>
         throw e

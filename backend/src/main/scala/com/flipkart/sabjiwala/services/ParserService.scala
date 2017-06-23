@@ -52,7 +52,9 @@ private object BigBasketParserService extends ParserModel {
         tmpProdName = ""
       Try_(InvoiceLine( productName = tmpProdName, originalPrice = price.toDouble, quantity = quantity.toDouble )).toOption
     }
+    Validator.validate(invoiceNumber)
     val notNullData = formattedLines.filter(_.productName.nonEmpty)
+
     Invoice(invoiceId = invoiceNumber,invoiceDate = "", storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
   }
 

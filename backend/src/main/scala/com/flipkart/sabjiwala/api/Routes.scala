@@ -30,9 +30,16 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
           fileInfo.status match {
             case Success(_) =>
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
-              val ourResults = SabjiWalaService.processReciept(fileInfo.tmpFilePath)
-
-              complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", ourResults)))
+              try {
+                val ourResults = SabjiWalaService.processReciept(fileInfo.tmpFilePath)
+                complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", ourResults)))
+              }
+              catch {
+                case e: Exception => {
+                  println("printing Error", e)
+                  complete(GenericResponse(StatusCodes.BadRequest.intValue, null, Response("There was some error processing your request", Map("debug" -> e.getMessage))))
+                }
+              }
             case Failure(e) =>
               //There was some isse processing the fileupload.
               println("Upload File Error", e)
