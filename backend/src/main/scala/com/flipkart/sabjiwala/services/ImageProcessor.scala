@@ -20,7 +20,7 @@ object ImageProcessor {
   def apply(file:String):List[String] = {
     val fileId = StringUtils.generateRandomStr(6)
     val cleanFile = s"$baseDir/clean_$fileId.jpg"
-    val cleanCmd = s"/Users/$username/Downloads/textcleaner -g -e stretch -f 25 -o 20 $file $cleanFile"
+    val cleanCmd = s"/Users/$username/Downloads/textcleaner -g -e stretch -f 25 -o 5 -s 1 $file $cleanFile"
     val textCleanOutput = cleanCmd.!!
 
     val outFile = s"/tmp/read_$fileId"
