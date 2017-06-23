@@ -1,6 +1,6 @@
 package com.flipkart.sabjiwala.dao
 
-import com.flipkart.sabjiwala.models.Invoice
+import com.flipkart.sabjiwala.models.InvoiceMeta
 import org.springframework.dao.DataAccessException
 
 /**
@@ -25,7 +25,7 @@ class InvoiceStore(table: String, mysqlFactory: MySQLFactory) extends MySQLDao {
   }
 
 
-  def put(data: Invoice): Unit = {
+  def put(data: InvoiceMeta): Unit = {
     implicit val j = mysqlHelper.getJDBCInterface
     val q =
       s"""

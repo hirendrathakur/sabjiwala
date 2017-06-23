@@ -6,7 +6,7 @@ package com.flipkart.sabjiwala.models
 case class RawInvoice(invoiceId:String, storeName:String, totalAmount:Double, items:List[InvoiceLine] )
 case class InvoiceLine(productName:String, amount:Double, quantity:Double)
 
-case class Invoice (
+case class InvoiceMeta(
                    vendor: String,
                    invoiceDate: String,
                    invoiceNumber: String,

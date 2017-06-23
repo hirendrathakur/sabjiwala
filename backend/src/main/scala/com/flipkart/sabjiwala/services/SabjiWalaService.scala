@@ -1,13 +1,13 @@
 package com.flipkart.sabjiwala.services
 
-import com.flipkart.sabjiwala.models.{Invoice, RawInvoice}
+import com.flipkart.sabjiwala.models.{InvoiceMeta, RawInvoice}
 
 /**
   * Created by kinshuk.bairagi on 23/06/17.
   */
 object SabjiWalaService {
 
-  def processReciept(file:String): Invoice = {
+  def processReciept(file:String): InvoiceMeta = {
 
     val lines = ImageProcessor(file)
     val bestModel = ParserService("bb")
@@ -15,7 +15,7 @@ object SabjiWalaService {
 
     val discount = CatalogService.getDiscount(results)
 
-    Invoice(
+    InvoiceMeta(
       vendor = results.storeName,
       invoiceDate = discount.invoiceDate,
       invoiceNumber = results.invoiceId,

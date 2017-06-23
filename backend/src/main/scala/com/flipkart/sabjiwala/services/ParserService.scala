@@ -1,6 +1,6 @@
 package com.flipkart.sabjiwala.services
 
-import com.flipkart.sabjiwala.models.{Invoice, InvoiceLine, RawInvoice}
+import com.flipkart.sabjiwala.models.{InvoiceMeta, InvoiceLine, RawInvoice}
 import com.flipkart.sabjiwala.utils.Wrappers._
 
 import scala.util.matching.Regex
