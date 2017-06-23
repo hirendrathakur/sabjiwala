@@ -13,7 +13,7 @@ import com.flipkart.sabjiwala.utils.StringUtils._
 import scala.concurrent.{Await, Future}
 import HttpService._
 import akka.http.scaladsl.model.headers.RawHeader
-import com.flipkart.sabjiwala.models.{BbData, BbProductServiceResponse, RawInvoice}
+import com.flipkart.sabjiwala.models.{BbData, BbProductServiceResponse, Invoice}
 import com.flipkart.sabjiwala.utils.StringUtils._
 
 /**
@@ -31,17 +31,17 @@ object CatalogService {
     bbProductServiceResponse.results.data
   }
 
-  def getDiscount(rawInvoice: RawInvoice): UploadResponse = {
+  def getDiscount(rawInvoice: Invoice): UploadResponse = {
     println("purchasedProducts : " + rawInvoice.items)
     var potentialSavings = 0.0
     for(product <- rawInvoice.items if product.productName.nonEmpty) {
       val result = search(product.productName)
       if(result.length > 0){
-        println(s"result for ${product.productName} and price ${product.amount}")
+        println(s"result for ${product.productName} and price ${product.originalPrice}")
         println(result)
-        val closest = result.minBy(v => math.abs(v.price.toDouble - product.amount))
+        val closest = result.minBy(v => math.abs(v.price.toDouble - product.originalPrice))
         println(closest)
-        potentialSavings = potentialSavings + product.amount - closest.price.toDouble
+        potentialSavings = potentialSavings + product.originalPrice - closest.price.toDouble
       }
     }
     potentialSavings = BigDecimal(potentialSavings).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble

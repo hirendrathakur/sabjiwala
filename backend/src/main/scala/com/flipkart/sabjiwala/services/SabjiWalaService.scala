@@ -1,6 +1,6 @@
 package com.flipkart.sabjiwala.services
 
-import com.flipkart.sabjiwala.models.{InvoiceMeta, RawInvoice}
+import com.flipkart.sabjiwala.models.{InvoiceMeta, Invoice}
 
 /**
   * Created by kinshuk.bairagi on 23/06/17.
