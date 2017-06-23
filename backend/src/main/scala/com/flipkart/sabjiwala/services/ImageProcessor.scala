@@ -14,13 +14,13 @@ import com.flipkart.sabjiwala.utils.StringUtils
 object ImageProcessor {
 
   private val username = System.getProperty("user.name")
-  private val baseDir = s"/Users/$username/.sabjiwala/"
+  private val baseDir = s"/Users/$username/.sabjiwala"
   private val makeBaseDir = s"mkdir -p $baseDir".!!
 
   def apply(file:String):List[String] = {
     val fileId = StringUtils.generateRandomStr(6)
     val cleanFile = s"$baseDir/clean_$fileId.jpg"
-    val cleanCmd = s"/Users/$username/Downloads/textcleaner -g -e stretch -f 25 -o 5 -s 1 $file $cleanFile"
+    val cleanCmd = s"/Users/$username/Downloads/textcleaner -g -e none -f 15 -o 20 $file $cleanFile"
     val textCleanOutput = cleanCmd.!!
 
     val outFile = s"/tmp/read_$fileId"
