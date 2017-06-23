@@ -43,7 +43,14 @@ private object BigBasketParserService extends ParserModel {
       val quantity = getSecondMatch(regex3, group2)
       val r1 = "[A-Za-z]".r
       val firstIdx = group1.indexOfSlice(r1.findFirstIn(group1).getOrElse(""))
-      Try_(InvoiceLine( productName = group1.substring(firstIdx) , originalPrice = price.toDouble, quantity = quantity.toDouble )).toOption
+      var tmpProdName = group1.substring(firstIdx)
+      if(tmpProdName.head == 'A' || tmpProdName.head == 'M' || tmpProdName.head == 'M' )
+        tmpProdName = tmpProdName.substring(1)
+      if(tmpProdName.head == 'A' || tmpProdName.head == 'M' || tmpProdName.head == 'M' )
+        tmpProdName = tmpProdName.substring(1)
+      if(tmpProdName.length < 7)
+        tmpProdName = ""
+      Try_(InvoiceLine( productName = tmpProdName, originalPrice = price.toDouble, quantity = quantity.toDouble )).toOption
     }
     val notNullData = formattedLines.filter(_.productName.nonEmpty)
     Invoice(invoiceId = invoiceNumber,invoiceDate = "", storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
