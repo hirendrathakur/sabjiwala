@@ -1,6 +1,6 @@
 package com.flipkart.sabjiwala.services
 
-import com.flipkart.sabjiwala.models.{InvoiceMeta, InvoiceLine, Invoice}
+import com.flipkart.sabjiwala.models.{ InvoiceLine, Invoice}
 import com.flipkart.sabjiwala.utils.Wrappers._
 
 import scala.util.matching.Regex
@@ -45,7 +45,7 @@ private object BigBasketParserService extends ParserModel {
     }
     val notNullData = formattedLines.filter(_.productName.nonEmpty)
 
-    Invoice(invoiceId = invoiceNumber, storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
+    Invoice(invoiceId = invoiceNumber,invoiceDate = "", storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
   }
 
   def getGroup(regex: Regex, key: Int, line: String): String = {
