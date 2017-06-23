@@ -17,7 +17,7 @@ object SabjiWalaService {
 
     Invoice(
       vendor = results.storeName,
-      invoiceDate = "today",
+      invoiceDate = discount.invoiceDate,
       invoiceNumber = results.invoiceId,
       amountSaved = discount.totalSavings,
       creationTS = System.currentTimeMillis()
