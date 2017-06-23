@@ -1,8 +1,12 @@
 package com.flipkart.sabjiwala.services
 
+import java.io.File
+
 import com.flipkart.sabjiwala.models.{ InvoiceLine, Invoice}
 import com.flipkart.sabjiwala.utils.Wrappers._
 
+import scala.io.Source
+import scala.util.Try
 import scala.util.matching.Regex
 
 trait ParserModel {
@@ -12,12 +16,49 @@ trait ParserModel {
 object ParserService {
 
   private val parsers = Map(
-    "bb" -> BigBasketParserService
+    "bb" -> BigBasketParserService,
+  "generic" -> DefaultParserService
   )
 
   def apply(name: String): ParserModel = parsers(name)
 }
 
+
+private object DefaultParserService extends ParserModel {
+
+  val entryRegex = """(.*)(\s{10,})(.*)""".r
+  val priceRegex = """(.*) ([0-9-.]+)""".r
+
+  override def parse(lines: List[String]): Invoice = {
+    val priceLines = lines.flatMap(line => {
+      val d = entryRegex.findFirstMatchIn(line)
+      d.filter(groups => {
+        groups.groupCount == 3
+      })
+    })
+
+    val items = priceLines.flatMap(matches => {
+      val name = matches.group(1).trim
+      val prices = Try(priceRegex.findFirstMatchIn(matches.group(3).trim).get.group(2)).getOrElse("0")
+      name -> prices
+      Try_(InvoiceLine(name, prices.toDouble, 1)).toOption
+    })
+    val notNullData = items.filter{ l =>
+      val name = l.productName.toLowerCase
+      name.nonEmpty && !name.contains("total")  && !name.contains("desc")
+    }
+    val res = Invoice(invoiceId = "NA" ,invoiceDate = "23-6-2017", storeName = "Generic", totalAmount = 0.0, items = notNullData)
+    println(res)
+
+    res
+  }
+
+
+  def main(args: Array[String]) {
+    val l = Source.fromFile(new File("/Users/hirendra.thakur/Documents/out.txt")).getLines().toList
+    parse(l)
+  }
+}
 
 private object BigBasketParserService extends ParserModel {
 

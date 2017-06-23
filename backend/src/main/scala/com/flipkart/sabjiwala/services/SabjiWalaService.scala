@@ -17,7 +17,17 @@ object SabjiWalaService {
   def processReciept(file:String): Invoice = {
 
     val lines = ImageProcessor(file)
-    val bestModel = ParserService("bb")
+
+    val bestModel = {
+      val alltext = lines.mkString(" ").toLowerCase
+      if(alltext.contains("bigbasket") || alltext.contains("innovative retail") || alltext.contains("basket") ) {
+        ParserService("bb")
+      } else {
+        ParserService("generic")
+      }
+    }
+
+    println("Parser: " + bestModel.getClass.getSimpleName)
     val results = bestModel.parse(lines)
     val accid = "ACC14134845961631669"
 
