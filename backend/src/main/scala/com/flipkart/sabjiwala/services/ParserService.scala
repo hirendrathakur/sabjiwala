@@ -22,7 +22,7 @@ object ParserService {
 private object BigBasketParserService extends ParserModel {
 
   override def parse(lines: List[String]): Invoice = {
-    val productLines = lines.filter(l => l.contains("Rs") && !l.contains("Total") && !l.contains("Payable"))
+    val productLines = lines.filter(l => l.contains("Rs") && !l.toLowerCase.contains("Total") && !l.toLowerCase.contains("payable"))
     val invoiceLine = lines.filter(_.contains("Order ID"))
     getFormatedResponse(productLines, invoiceLine)
   }
@@ -32,8 +32,7 @@ private object BigBasketParserService extends ParserModel {
     val regex2 = ".+?(?=Rs)".r
     val regex3 = "([0-9]*[.]?[0-9]+)".r
     val invoiceRegex = "(.*) (.*)".r
-    val invoiceNumber = invoiceRegex.findFirstMatchIn(invoiceLine.head).get.group(2).toString
-
+    val invoiceNumber = try invoiceRegex.findFirstMatchIn(invoiceLine.head).get.group(2).toString catch {case e:Exception=>""}
     val formattedLines = lines.flatMap { line =>
       val group1 = getGroup(regex2, 0, line).toString.trim
       val group2 = getGroup(regex1, 1, line)
