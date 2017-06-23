@@ -45,7 +45,7 @@ private object DefaultParserService extends ParserModel {
     })
     val notNullData = items.filter{ l =>
       val name = l.productName.toLowerCase
-      name.nonEmpty && !name.contains("total")  && !name.contains("desc")
+      name.nonEmpty && !name.contains("total")  && !name.contains("desc") && name.length > 4 && l.originalPrice > 0
     }
     val res = Invoice(invoiceId = "NA" ,invoiceDate = "23-6-2017", storeName = "Generic", totalAmount = 0.0, items = notNullData)
     println(res)
