@@ -132,7 +132,13 @@
       <center>
 				
         <div id="stage-scan"  >
-            <input type="file" name="file" accept="image/*" capture="camera" id="camera" class="btn btn-default" >
+
+            <img src="cap.svg" height="100px">
+            <br>
+
+            <div class="_1b9ZOM _3EakSC" style="margin-top: 20px"><a class="_3m5t30" id="capture-btn" >Scan Receipt</a></div>
+
+            <input type="file" id="capture-input" name="file" accept="image/*" capture="camera" id="camera" class="btn btn-default" style="display: none;" >
             <!-- <br> -->
             <!-- <img id="frame" height="300"> -->
         </div>
@@ -209,8 +215,12 @@
      $(".error-page").css({"display" : "block"})
   })
 
-  camera.addEventListener('change', function(e) {
-    var file = e.target.files[0]; 
+  $("#capture-btn").click(function(){
+    $("#capture-input").click();
+  })
+
+  $("#capture-input").on('change', function(e){
+      var file = e.target.files[0]; 
     // frame.src = URL.createObjectURL(file);
 
     var formData = new FormData();
@@ -241,9 +251,13 @@
             var color = "style='background-color: #d0e8d0'";
             $(result.response.data.items).each(function(index,row) {
               var c = '';
-              if (row.flipkartPrice < row.originalPrice)
-                c = color;
-              var line = "<tr><td>" + row.productName + "</td><td>" + row.originalPrice +  "</td><td " + c + " >" + row.flipkartPrice+  "</td></tr>" 
+              var Price = '--'
+              if(row.flipkartPrice> 0){
+                Price = row.flipkartPrice
+                if (row.flipkartPrice < row.originalPrice)
+                  c = color;
+              }
+              var line = "<tr><td>" + row.productName + "</td><td>" + row.originalPrice +  "</td><td " + c + " >" + Price+  "</td></tr>" 
               $("#price-diff").append(line)
             });
 
@@ -260,10 +274,9 @@
         processData: false
     });
 
+  })
 
-
-
-  });
+ 
 </script>
 
  
