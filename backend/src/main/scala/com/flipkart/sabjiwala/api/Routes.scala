@@ -5,7 +5,9 @@ import java.io.File
 import akka.http.scaladsl.model.{HttpEntity, HttpResponse, MediaTypes, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.stream.Materializer
+import com.flipkart.sabjiwala.dao.DaoFactory
 import com.flipkart.sabjiwala.directives.FileDirective
+import com.flipkart.sabjiwala.models.Invoice
 import com.flipkart.sabjiwala.services.{CatalogService, ParserService}
 import com.flipkart.sabjiwala.utils.StringUtils
 import com.flipkart.sabjiwala.wire.{GenericResponse, JsonToEntityMarshaller, Response}
@@ -37,7 +39,7 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
               val ourResults = CatalogService.getDiscount(results)
 //              println("Price and Name from bb")
 //              println(bbresults)
-
+              DaoFactory.invoiceStore.put(Invoice("Bigbasket", ourResults.invoiceDate, ourResults.invoiceNo, ourResults.totalSavings, System.currentTimeMillis(), System.currentTimeMillis()))
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", Map("tmpFile" -> fileInfo.tmpFilePath, "output" -> ourResults))))
             case Failure(e) =>
               //There was some isse processing the fileupload.

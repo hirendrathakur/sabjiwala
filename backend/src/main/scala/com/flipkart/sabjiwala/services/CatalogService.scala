@@ -47,7 +47,7 @@ object CatalogService {
       }
     }
     val invoiceNumber = purchasedPrdcts.getOrElse("invoiceId","BLR-PW-234565494").toString
-    val uploadResponse = UploadResponse(invoiceNumber, "10-June-2017", potentialSavings)
+    val uploadResponse = UploadResponse(invoiceNumber, "2017-06-20", potentialSavings)
     potentialSavings = BigDecimal(potentialSavings).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
     return uploadResponse
   }

@@ -1,5 +1,6 @@
 package com.flipkart.sabjiwala.dao
 
+import com.flipkart.sabjiwala.models.Invoice
 import org.springframework.dao.DataAccessException
 
 /**
@@ -24,15 +25,15 @@ class InvoiceStore(table: String, mysqlFactory: MySQLFactory) extends MySQLDao {
   }
 
 
-  def put(data: Object): Unit = {
+  def put(data: Invoice): Unit = {
     implicit val j = mysqlHelper.getJDBCInterface
     val q =
       s"""
-         |INSERT INTO $table(`key`, `kind`, `value`, `creationTS`, `lastUpdatedTS`, `expireTS`) VALUES(?, ?, ?, ?, ?, ?)
-         |ON DUPLICATE KEY UPDATE value = ?, lastUpdatedTS = ?, expireTS = ?
+         |INSERT INTO $table(`vendor`, `invoiceNumber`, `invoiceDate`, `amountSaved`, `creationTS`, `lastUpdatedTS`) VALUES(?, ?, ?, ?, ?, ?)
+         |ON DUPLICATE KEY UPDATE lastUpdatedTS = ?
       """.stripMargin
     try {
-      //      update(q, data.keyName, data.kind, data.value, data.creationTS, data.lastUpdatedTS, data.expireTS, data.value, data.lastUpdatedTS, data.expireTS)
+            update(q, data.vendor, data.invoiceNumber, data.invoiceDate, data.amountSaved, data.creationTS, data.lastUpdatedTS, data.lastUpdatedTS)
     } catch {
       case e: DataAccessException =>
         throw e
