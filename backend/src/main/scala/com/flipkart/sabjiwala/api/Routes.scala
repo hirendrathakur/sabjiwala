@@ -33,7 +33,7 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
               //ConnektService.sendPN("ACC14134845961631669","55")
               val ourResults = Try_(SabjiWalaService.processReciept(fileInfo.tmpFilePath)).get
-
+              println(ourResults)
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", ourResults)))
             case Failure(e) =>
               //There was some isse processing the fileupload.

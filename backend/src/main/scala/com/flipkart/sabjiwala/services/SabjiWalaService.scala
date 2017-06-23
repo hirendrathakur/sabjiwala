@@ -15,15 +15,14 @@ object SabjiWalaService {
     val lines = ImageProcessor(file)
     val bestModel = ParserService("bb")
     val results = bestModel.parse(lines)
-
+    val accid = "ACC14134845961631669"
     val updatedInvoice = CatalogService.getDiscount(results)
     val cashbackAmount =  math.abs((updatedInvoice.savings * 100 /10).toInt)
 
     if(cashbackAmount > 0 ) {
-      val cashback = PhonePeService.cashback("ACMI7LHKCPRB7RC449EPS24CTU83NLQ4", StringUtils.generateRandomStr(8), cashbackAmount)
-      ConnektService.sendPN("ACMI7LHKCPRB7RC449EPS24CTU83NLQ4",cashbackAmount.toString)
+      val cashback = PhonePeService.cashback(accid, StringUtils.generateRandomStr(8), cashbackAmount)
       println(cashback)
-
+      ConnektService.sendPN(accid,(cashbackAmount/100).toString)
     }
 
     Try_ {

@@ -1,31 +1,23 @@
 package com.flipkart.sabjiwala.services
 
-import akka.http.scaladsl.model._
-import akka.http.scaladsl.model.headers.{RawHeader, BasicHttpCredentials}
-import com.flipkart.sabjiwala.utils.StringUtils
-import scala.util.{Failure, Success}
-import scala.util.parsing.json._
 import akka.http.scaladsl.Http
-import akka.stream.{ActorMaterializer, Materializer}
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
-import HttpService._
+import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.headers.RawHeader
+import com.flipkart.sabjiwala.services.HttpService._
+import com.flipkart.sabjiwala.utils.StringUtils
 import com.flipkart.sabjiwala.utils.StringUtils._
-import HttpMethods._
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
+import scala.util.{Failure, Success, Try}
 
 object ConnektService {
 
   val connektUrl = "http://10.47.0.120/v1/send/push/android/retailapp/users/"
 
+  def id = StringUtils.generateRandomStr(12)
 
-//  val headers = Map(
-//    "x-api-key" -> "bw3VtGZYhTC4C8NDa94ybX9hf5wXqkuMgZsSRkNUdvNegQC8",
-//    "Content-Type" -> "application/json"
-//  )
-
-  val id= StringUtils.generateRandomStr(12)
-
-  def sendPN(accId:String, cashBack:String): Unit = {
+  def sendPN(accId:String, cashBack:String): Try[String] = {
     val payload = s"""{
                       |	"channel": "PN",
                       |	"expiryTs": 1498933800000,
@@ -99,7 +91,7 @@ object ConnektService {
     val stringBody = response.entity.getString
 
     if(response.status.isSuccess()) {
-      println("Pn Sent")
+      println(s"Pn Sent :  $stringBody")
       Success(stringBody)
     } else
       Failure(new Throwable(stringBody))
