@@ -8,6 +8,7 @@ import com.flipkart.sabjiwala.services.SabjiWalaService
 import com.flipkart.sabjiwala.wire.{GenericResponse, JsonToEntityMarshaller, Response}
 import com.flipkart.sabjiwala.services.ConnektService
 import scala.util.{Failure, Success}
+import com.flipkart.sabjiwala.utils.Wrappers.Try_
 
 
 /**
@@ -31,7 +32,7 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
             case Success(_) =>
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
               //ConnektService.sendPN("ACC14134845961631669","55")
-              val ourResults = SabjiWalaService.processReciept(fileInfo.tmpFilePath)
+              val ourResults = Try_(SabjiWalaService.processReciept(fileInfo.tmpFilePath)).get
 
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", ourResults)))
             case Failure(e) =>

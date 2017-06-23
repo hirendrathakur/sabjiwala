@@ -21,8 +21,12 @@ object Wrappers {
       Success(f)
     }
     catch {
+      case n:NumberFormatException =>
+        println(s"NumberFormatException e: ${n.getMessage}")
+        Failure(n)
       case e: Throwable =>
         println(s"e: ${e.getMessage}",e)
+        e.printStackTrace()
         Failure(e)
     }
   }

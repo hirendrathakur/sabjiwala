@@ -44,16 +44,18 @@ private object BigBasketParserService extends ParserModel {
       val r1 = "[A-Za-z]".r
       val firstIdx = group1.indexOfSlice(r1.findFirstIn(group1).getOrElse(""))
       var tmpProdName = group1.substring(firstIdx)
-      if(tmpProdName.head == 'A' || tmpProdName.head == 'M' || tmpProdName.head == 'M' )
-        tmpProdName = tmpProdName.substring(1)
-      if(tmpProdName.head == 'A' || tmpProdName.head == 'M' || tmpProdName.head == 'M' )
-        tmpProdName = tmpProdName.substring(1)
-      if(tmpProdName.length < 7)
-        tmpProdName = ""
+      if(tmpProdName.length >= 7 ) {
+        if (tmpProdName.head == 'A' || tmpProdName.head == 'M' || tmpProdName.head == 'M')
+          tmpProdName = tmpProdName.substring(1)
+        if (tmpProdName.head == 'A' || tmpProdName.head == 'M' || tmpProdName.head == 'M')
+          tmpProdName = tmpProdName.substring(1)
+        if (tmpProdName.length < 7)
+          tmpProdName = ""
+      }
       Try_(InvoiceLine( productName = tmpProdName, originalPrice = price.toDouble, quantity = quantity.toDouble )).toOption
     }
     val notNullData = formattedLines.filter(_.productName.nonEmpty)
-    Invoice(invoiceId = invoiceNumber,invoiceDate = "", storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
+    Invoice(invoiceId = invoiceNumber,invoiceDate = "23-6-2017", storeName = "BigBasket", totalAmount = 0.0, items = notNullData)
   }
 
   def getGroup(regex: Regex, key: Int, line: String): String = {
