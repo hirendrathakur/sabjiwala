@@ -6,7 +6,7 @@ import akka.stream.Materializer
 import com.flipkart.sabjiwala.directives.FileDirective
 import com.flipkart.sabjiwala.services.SabjiWalaService
 import com.flipkart.sabjiwala.wire.{GenericResponse, JsonToEntityMarshaller, Response}
-
+import com.flipkart.sabjiwala.services.ConnektService
 import scala.util.{Failure, Success}
 
 
@@ -30,6 +30,7 @@ class Routes(implicit mat: Materializer) extends FileDirective with JsonToEntity
           fileInfo.status match {
             case Success(_) =>
               println(s"Upload Complete ${fileInfo.tmpFilePath} ")
+              //ConnektService.sendPN("ACC14134845961631669","55")
               val ourResults = SabjiWalaService.processReciept(fileInfo.tmpFilePath)
 
               complete(GenericResponse(StatusCodes.OK.intValue, null, Response(s"Upload Accepted: Tmp File Created", ourResults)))
