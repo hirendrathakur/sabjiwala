@@ -10,4 +10,6 @@ object DaoFactory {
   val mySQLFactory = new MySQLFactory("localhost", "sabjiWalaDabba", "root", "", ConfigFactory.empty())
 
   val invoiceStore = new InvoiceStore("invoiceStore", mySQLFactory)
+
+  val invoiceLineStore = new InvoiceLineStore("invoiceLineStore", mySQLFactory)
 }
